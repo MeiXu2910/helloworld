@@ -1,56 +1,94 @@
-# Triangle Classifier
+# GitHub API Repository Fetcher (HW 04a)
 
-## Project Overview
-This project implements a Python program to classify triangles based on their side lengths. The program determines whether a triangle is:
-- Equilateral
-- Isosceles
-- Scalene
-- Right triangle
-- Not a triangle
+## Overview
+This project is a Python script that fetches a GitHub user's repositories and counts the number of commits in each repository.
 
-Additionally, it includes automated test cases using the Pytest framework to verify the correctness of the implementation.
+## Dependencies
+- Python 3.x
+- `requests` module (`pip install requests`)
+- `unittest` module (built-in for testing)
 
----
+## Installation & Usage
 
-## Assignment Experience
+### Clone the Repository
+```
+git clone https://github.com/MeiXu2910/helloworld.git
+cd helloworld/GitHubApi567-hw4a
+```
 
-### Challenges Encountered
-1. **Understanding Triangle Classification Logic**:
-   - Handling edge cases like ensuring the sides form a valid triangle (`"Not a triangle"`) was initially challenging.
-   - Differentiating between various triangle types (e.g., equilateral vs. isosceles) required careful attention to conditional logic.
+### Configure Your GitHub Token
+1. Generate a **GitHub Personal Access Token (PAT)** [here](https://github.com/settings/tokens).
+2. Ensure it has `public_repo` scope.
+3. Set it as an environment variable:
+   ```sh
+   export GITHUB_TOKEN=your_actual_token_here
+   ```
 
-2. **Setting Up Pytest**:
-   - Configuring the testing environment and understanding Pytest commands took some time. Once resolved, the tool proved efficient for validating the code.
+### Run the Main Script
+```
+python github_api.py
+```
 
-3. **GitHub Integration**:
-   - Linking the local repository to GitHub required troubleshooting an existing remote URL conflict. The issue was resolved by resetting the remote URL.
+### Run Unit Tests
+```
+python -m unittest test_github_api.py
+```
 
----
+## Continuous Integration (CI/CD)
+This project uses **Travis CI** for continuous integration to ensure all tests pass before merging.
 
-### Thoughts on the Requirements
-- The requirements provided clear guidance on what to implement, test, and deliver.
-- The focus on testing emphasized the importance of validating code through well-constructed test cases.
-- Breaking the deliverables into distinct sections (code, test cases, and experience report) helped structure the work effectively.
+### Setting Up Travis CI
+1. Sign in to [Travis CI](https://travis-ci.com/) using GitHub.
+2. Enable your repository.
+3. Add a `.travis.yml` file with the following content:
 
----
+```yaml
+language: python
+python:
+  - "3.8"
+install:
+  - pip install requests
+script:
+  - python -m unittest test_github_api.py
+```
 
-### Challenges with Tools
-- **VS Code**: Setting up the workspace correctly to run both the program and test cases took some time.
-- **Pytest**: Understanding the syntax for asserting test cases and interpreting the output was a new but rewarding experience.
-- **GitHub**: Initially, there was a minor issue with remote repository setup, which was resolved through troubleshooting.
+4. Push the `.travis.yml` file to your repository.
+5. Ensure the build passes with the badge in `README.md`:
 
----
+```
+[![Build Status](https://travis-ci.com/MeiXu2910/helloworld.svg?branch=main)](https://travis-ci.com/MeiXu2910/helloworld)
+```
 
-### Criteria for Sufficient Test Cases
-1. Five test cases were designed to cover:
-   - Equilateral, Isosceles, Scalene, Right triangles, and invalid inputs (`Not a triangle`).
-2. Edge cases were included, such as inputs where the sum of two sides equals the third side.
-3. Running all test cases with Pytest returned a 100% success rate, demonstrating the code's correctness.
+## Example Output
+```
+Repo: Linux Number of commits: 500
+Repo: Kernel Number of commits: 1200
+```
 
----
+## Important Notes
+- GitHub API has rate limits. If you exceed the limit, wait before retrying.
+- Avoid hardcoding your personal access token in public repositories.
 
-## How to Run the Code
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/MeiXu2910/helloworld.git
-# helloworld
+## Assignment Requirements Fulfilled
+ Fetch GitHub API data correctly
+ Implemented unit tests
+ Configured CI/CD with Travis CI
+ Provided detailed documentation
+
+## Thought Process & Challenges
+### Design Approach
+1. **Modular Structure**: The function is separated for better testability.
+2. **Error Handling**: Handled request failures using `try-except`.
+3. **Pagination**: Considered for handling large repositories.
+
+### Testing Challenges & Solutions
+- **API Rate Limits**:
+  - Used authentication to increase request limits.
+  - Added `time.sleep(2)` to avoid excessive requests.
+- **Handling Invalid Users**:
+  - Tested with non-existent usernames.
+- **GitHub API Response Changes**:
+  - Used `get()` to access JSON keys safely.
+
+## Conclusion
+This assignment successfully implements GitHub API integration with testing and CI/CD to ensure reliability and correctness.
